@@ -21,7 +21,7 @@ public class SecurityUtil {
         Collection<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(userDO.getType().toString()));
 
-        SecurityUser user = new SecurityUser(userDO.getId(), userDO.getUsername(), userDO.getTrade(), userDO.getIdentity(), authorities);
+        SecurityUser user = new SecurityUser(userDO.getUid(), userDO.getUsername(), authorities);
 
         return user;
     }
@@ -35,34 +35,6 @@ public class SecurityUtil {
         return null;
     }
 
-    public static UserRoleEnum integer2Enum(Integer identity) {
-
-        UserRoleEnum result = null;
-
-        switch (identity) {
-            case 6:
-                result = UserRoleEnum.ROLE_ADMIN;
-                break;
-            case 1:
-                result = UserRoleEnum.ROLE_USER_1;
-                break;
-            case 2:
-                result =  UserRoleEnum.ROLE_USER_2;
-                break;
-            case 3:
-                result =  UserRoleEnum.ROLE_USER_3;
-                break;
-            case 4:
-                result = UserRoleEnum.ROLE_USER_4;
-                break;
-            case 5:
-                result = UserRoleEnum.ROLE_USER_5;
-                break;
-        }
-
-        return result;
-    }
-
     /**
      * 获取当前用户ID
      * @return
@@ -70,10 +42,6 @@ public class SecurityUtil {
     public static Long getCurrentUserId() {
 
         return getCurrentUser() == null ? null : getCurrentUser().getUserId();
-    }
-
-    public static String getCurrentTrade() {
-        return getCurrentUser() == null ? null : getCurrentUser().getTrade();
     }
 
 }

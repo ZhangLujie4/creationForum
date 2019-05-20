@@ -60,9 +60,6 @@ public class UserAuthentication implements Authentication {
         return user.getUsername();
     }
 
-    public String getTrade() {
-        return user.getTrade();
-    }
 
     public Long getId() {
         return user.getUserId();

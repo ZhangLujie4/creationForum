@@ -1,7 +1,9 @@
 package com.zlj.forum.web.dataobject;
 
 import com.zlj.forum.common.dataobject.UserRoleEnum;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -11,12 +13,16 @@ import javax.persistence.*;
  */
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "user")
-public class UserDO {
+public class UserDO extends BaseDO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private Long uid;
 
     private String username;
 
@@ -24,17 +30,8 @@ public class UserDO {
 
     /**
      * ROLE_ADMIN 管理员
-     * ROLE_USER_1 一级用户
-     * ROLE_USER_2 二级用户
-     * ROLE_USER_3 三级用户
-     * ROLE_USER_4 四级用户
-     * ROLE_USER_5 五级用户
+     * ROLE_USER 用户
      */
-
     @Enumerated(EnumType.STRING)
     private UserRoleEnum type;
-
-    private String trade;
-
-    private Integer identity;
 }

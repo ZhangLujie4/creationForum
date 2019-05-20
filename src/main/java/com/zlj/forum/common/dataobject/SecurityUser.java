@@ -20,20 +20,14 @@ public class SecurityUser {
 
     private String username;
 
-    private String trade;
-
-    private Integer identity;
-
     private Collection<? extends GrantedAuthority> authorities = new HashSet<>();
 
     public SecurityUser() {
     }
 
-    public SecurityUser(Long userId, String username, String trade, Integer identity, Collection<? extends GrantedAuthority> authorities) {
+    public SecurityUser(Long userId, String username, Collection<? extends GrantedAuthority> authorities) {
         this.userId = userId;
         this.username = username;
-        this.trade = trade;
-        this.identity = identity;
         this.authorities = authorities;
     }
 }
