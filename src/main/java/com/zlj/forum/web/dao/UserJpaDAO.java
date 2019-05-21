@@ -17,4 +17,6 @@ public interface UserJpaDAO extends JpaRepository<UserDO, Long> {
      */
     UserDO findByUsername(String username);
 
+    UserDO findByUid(long uid);
+
 }

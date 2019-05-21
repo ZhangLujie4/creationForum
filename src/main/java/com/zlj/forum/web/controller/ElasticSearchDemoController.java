@@ -39,7 +39,7 @@ import java.util.concurrent.ExecutionException;
 @RestController
 @RequestMapping("/api/elastic")
 @Slf4j
-public class ElasticSearchController {
+public class ElasticSearchDemoController {
 
     @Autowired
     private TransportClient client;

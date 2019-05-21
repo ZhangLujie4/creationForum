@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class ResultVO<T> {
 
-    private String status;
+    private Boolean success;
 
     private Integer code;
 

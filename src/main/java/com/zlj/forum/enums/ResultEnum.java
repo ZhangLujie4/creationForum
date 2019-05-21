@@ -21,7 +21,9 @@ public enum ResultEnum {
 
     JWT_EXPIRED(6, "jwt过期,invalid jwt"),
 
-    DATE_CONVERT_ERROR(7, "时间转换异常")
+    DATE_CONVERT_ERROR(7, "时间转换异常"),
+
+    ES_ERROR(8, "es操作异常"),
     ;
 
     private Integer code;

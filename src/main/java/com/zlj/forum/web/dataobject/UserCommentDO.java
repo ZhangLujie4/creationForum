@@ -1,40 +1,42 @@
 package com.zlj.forum.web.dataobject;
 
-import com.zlj.forum.common.dataobject.UserRoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
 
 /**
- * @author tori
- * 2018/8/12 下午10:22
+ * @author zhanglujie
+ * @description
+ * @date 2019-05-21 01:52
  */
-@Entity
+
 @Data
+@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user")
-public class UserDO {
+@Entity
+@Table(name = "user_comment")
+public class UserCommentDO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long aid;
+
     private Long uid;
 
-    private String username;
+    private String content;
 
-    private String password;
+    private String reply;
 
-    /**
-     * ROLE_ADMIN 管理员
-     * ROLE_USER 用户
-     */
-    @Enumerated(EnumType.STRING)
-    private UserRoleEnum type;
+    private Long likeNum;
+
+    private String nickName;
 
     /**
      * 创建时间

@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @author zhanglujie
@@ -19,7 +20,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "my_favorite")
-public class MyFavoriteDO extends BaseDO {
+public class MyFavoriteDO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +29,14 @@ public class MyFavoriteDO extends BaseDO {
     private Long uid;
 
     private Long aid;
+
+    /**
+     * 创建时间
+     */
+    private Date gmtCreate;
+
+    /**
+     * 更新时间
+     */
+    private Date gmtUpdate;
 }

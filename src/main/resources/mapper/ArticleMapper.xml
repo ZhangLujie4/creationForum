@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zlj.forum.web.mapper.ArticleMapper">
+
+    <update id="addCommentNum" parameterType="java.lang.Long">
+        update article set comment_num = comment_num + 1 where id = #{id}
+    </update>
+
+    <select id="getHomeList" resultType="com.zlj.forum.web.dataobject.ArticleDO">
+        select
+               id as id,
+               title as title,
+               uid as uid,
+               favorite_num as favoriteNum,
+               like_num as likeNum,
+               gmt_create as gmtCreate,
+               gmt_update as gmtUpdate,
+               comment_num as commentNum
+        from article
+        order by likeNum desc, favoriteNum desc, commentNum desc, gmtUpdate desc
+        limit #{from}, #{size}
+    </select>
+</mapper>

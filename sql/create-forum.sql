@@ -15,6 +15,9 @@ create table `article` (
   `id` int(11) auto_increment comment '自增ID',
   `title` varchar(128) default '' comment '文章名称',
   `uid` int(11) default '0' comment '作者id',
+  `favorite_num` int(11) default '0' comment '收藏数',
+  `like_num` int(11) default '0' comment '喜欢数',
+  `comment_num` int(11) default '0' comment '评论数',
   `gmt_create` timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_update` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   primary key (`id`)
@@ -47,6 +50,15 @@ create table `like_relation` (
   primary key (`id`)
 ) comment '点赞关系表';
 
+create table `like_relation_comment` (
+  `id` int(11) auto_increment comment '自增id',
+  `uid` int(11) not null comment '用户id',
+  `cid` int(11) not null comment '评论id',
+  `gmt_create` timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_update` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  primary key (`id`)
+) comment '评论点赞关系表';
+
 create table `hot_search` (
   `id` int(11) auto_increment comment '自增id',
   `keyword` varchar(64) not null comment '热搜关键词',
@@ -61,5 +73,19 @@ create table `user_ext` (
   `uid` int(11) not null comment '用户id',
   `avatar` varchar(256) default '' comment '头像链接',
   `motto` varchar(128) default '' comment '座右铭',
+  `nick_name` varchar(64) default '' comment '昵称',
   primary key (`id`)
 ) comment '用户信息扩展标';
+
+create table `user_comment` (
+  `id` int(11) auto_increment comment '自增id',
+  `aid` int(11) default '0' comment '文章id',
+  `uid` int(11) default '0' comment '用户id',
+  `nick_name` varchar(64) default '' comment '用户昵称',
+  `content` varchar(256) default '' comment '评论内容',
+  `reply` varchar(512) default '' comment '回复内容',
+  `like_num` int(11) default '0' comment '点赞数',
+  `gmt_create` timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_update` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  primary key (`id`)
+) comment '用户评论';
