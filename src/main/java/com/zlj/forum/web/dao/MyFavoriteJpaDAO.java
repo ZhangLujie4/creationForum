@@ -11,4 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface MyFavoriteJpaDAO extends JpaRepository<MyFavoriteDO, Long> {
 
     MyFavoriteDO findByAidAndUid(long aid, long uid);
+
+    long countByUid(long uid);
 }

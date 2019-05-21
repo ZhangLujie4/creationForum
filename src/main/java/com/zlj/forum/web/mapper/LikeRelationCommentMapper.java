@@ -11,6 +11,5 @@ import java.util.List;
  */
 public interface LikeRelationCommentMapper {
 
-    List<Long> getRelationList(@Param("uid") Long uid,
-                                        @Param("cids") List<Long> cids);
+    List<Long> getRelationList(@Param("uid") Long uid, @Param("cids") List<Long> cids);
 }

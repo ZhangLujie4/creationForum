@@ -42,7 +42,6 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * @author zhanglujie
@@ -92,7 +91,7 @@ public class ArticleService {
     private ArticleMapper articleMapper;
 
     @Autowired
-    private AsycCommonService asycCommonService;
+    private AsyncCommonService asyncCommonService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -277,7 +276,12 @@ public class ArticleService {
         UserCommentDO userCommentDO = new UserCommentDO();
         userCommentDO.setAid(commentForm.getAid());
         userCommentDO.setContent(commentForm.getContent());
-        userCommentDO.setNickName(SecurityUtil.getCurrentUser().getUsername());
+        UserExtDO extDO = userExtJpaDAO.findByUid(uid);
+        if (null == extDO || StringUtils.isEmpty(extDO.getNickName())) {
+            userCommentDO.setNickName(SecurityUtil.getCurrentUser().getUsername());
+        } else {
+            userCommentDO.setNickName(extDO.getNickName());
+        }
         userCommentDO.setUid(uid);
         if (commentForm.getRid() != null) {
             UserCommentDO commentDO = userCommentJpaDAO.getOne(commentForm.getRid());
@@ -295,7 +299,7 @@ public class ArticleService {
         userCommentJpaDAO.save(userCommentDO);
 
         // 异步更新评论数
-        asycCommonService.addCommentNum(commentForm.getAid());
+        asyncCommonService.addCommentNum(commentForm.getAid());
         return ResultVOUtil.success("评论成功");
     }
 
@@ -351,7 +355,7 @@ public class ArticleService {
     public ResultVO getListByKeyword(String keyword, int page, int size) {
 
         // 异步更新热搜词
-        asycCommonService.updateHotSearch(keyword);
+        asyncCommonService.updateHotSearch(keyword);
 
         // es搜索文章列表
         QueryBuilder query = QueryBuilders.multiMatchQuery(keyword, "title", "content");

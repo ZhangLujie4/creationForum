@@ -21,7 +21,5 @@ public interface UserCommentMapper {
      * @param size
      * @return
      */
-    List<UserCommentDO> getCommentList(@Param("aid") Long aid,
-                                       @Param("from") int from,
-                                       @Param("size") int size);
+    List<UserCommentDO> getCommentList(@Param("aid") Long aid, @Param("from") int from, @Param("size") int size);
 }

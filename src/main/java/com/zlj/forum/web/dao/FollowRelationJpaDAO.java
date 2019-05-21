@@ -11,4 +11,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface FollowRelationJpaDAO extends JpaRepository<FollowRelationDO, Long> {
 
     FollowRelationDO findByFansUidAndFollowedUid(long fansUid, long followedUid);
+
+    /**
+     * 关注数
+     * @return
+     */
+    long countByFansUid(Long uid);
+
+    /**
+     * 粉丝数
+     * @param uid
+     * @return
+     */
+    long countByFollowedUid(Long uid);
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zlj.forum.web.mapper.FollowRelationMapper">
+    <select id="getUserFollower" resultType="com.zlj.forum.web.to.FollowTO">
+        select
+        t3.avatar as avatar,
+        t3.motto as motto,
+        t3.nick_name as nickName,
+        t2.username as username
+        from
+            (
+              select followed_uid
+              from follow_relation
+              where fans_id = #{uid}
+              order by id desc
+              limit #{from}, #{size}
+            ) t1
+        left join `user` t2 on t1.followed_uid = t2.uid
+        left join `user_ext` t3 on t1.followed_uid = t3.uid
+    </select>
+
+    <select id="getUserFans" resultType="com.zlj.forum.web.to.FollowTO">
+        select
+            t3.avatar as avatar,
+            t3.motto as motto,
+            t3.nick_name as nickName,
+            t2.username as username
+        from
+            (
+                select fans_id
+                from follow_relation
+                where followed_uid = #{uid}
+                order by id desc
+                limit #{from}, #{size}
+            ) t1
+                left join `user` t2 on t1.fans_id = t2.uid
+                left join `user_ext` t3 on t1.fans_id = t3.uid
+    </select>
+</mapper>

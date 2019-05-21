@@ -4,6 +4,7 @@ import com.zlj.forum.web.dataobject.ArticleDO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @author zhanglujie
@@ -20,4 +21,11 @@ public interface ArticleJpaDAO extends JpaRepository<ArticleDO, Long> {
      */
     @Transactional
     void removeByIdAndUid(Long id, Long uid);
+
+    /**
+     * 获取用户文章数
+     * @param uid
+     * @return
+     */
+    long countByUid(Long uid);
 }

@@ -1,7 +1,7 @@
 create table `user` (
   `id` int(11) auto_increment comment '自增id',
   `uid` int(11) default '0' comment '用户id',
-  `username` varchar(16) not null comment '账户名',
+  `username` varchar(32) not null comment '账户名',
   `password` varchar(32) not null comment '密码',
   `type` varchar(16) not null comment '账户类型 role_user/role_admin',
   `gmt_create` timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',

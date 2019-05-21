@@ -56,7 +56,7 @@ public class ArticleController {
     @GetMapping("/common/comment/list")
     public ResultVO getCommentList(@RequestParam(name = "id") String id,
                                    @RequestParam(name = "page", defaultValue = "1") Integer page,
-                                   @RequestParam(name = "size", defaultValue = "10") Integer size) {
+                                   @RequestParam(name = "size", defaultValue = "15") Integer size) {
         Long uid = SecurityUtil.getCurrentUserId();
         return articleService.getCommentList(uid, id, page, size);
     }
@@ -69,14 +69,14 @@ public class ArticleController {
 
     @GetMapping("/common/home/list")
     public ResultVO getHomeList(@RequestParam(name = "page", defaultValue = "1") Integer page,
-                                @RequestParam(name = "size", defaultValue = "10") Integer size) {
+                                @RequestParam(name = "size", defaultValue = "15") Integer size) {
         return articleService.getHomeList(page, size);
     }
 
     @GetMapping("/common/search/list")
     public ResultVO getArticleListByKeyword(@RequestParam(name = "keyword") String keyword,
                                             @RequestParam(name = "page", defaultValue = "1") Integer page,
-                                            @RequestParam(name = "size", defaultValue = "10") Integer size) {
+                                            @RequestParam(name = "size", defaultValue = "15") Integer size) {
         return articleService.getListByKeyword(keyword, page, size);
     }
 }

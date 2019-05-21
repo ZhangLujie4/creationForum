@@ -20,4 +20,41 @@
         order by likeNum desc, favoriteNum desc, commentNum desc, gmtUpdate desc
         limit #{from}, #{size}
     </select>
+
+    <select id="getArticleListByUid" resultType="com.zlj.forum.web.dataobject.ArticleDO">
+        select
+            id as id,
+            title as title,
+            uid as uid,
+            favorite_num as favoriteNum,
+            like_num as likeNum,
+            gmt_create as gmtCreate,
+            gmt_update as gmtUpdate,
+            comment_num as commentNum
+        from article
+        where uid = #{uid}
+        order by gmtUpdate desc
+        limit #{from}, #{size}
+    </select>
+
+    <select id="getArticleListByAids" resultType="com.zlj.forum.web.dataobject.ArticleDO">
+        select
+            t2.id as id,
+            t2.title as title,
+            t2.uid as uid,
+            t2.favorite_num as favoriteNum,
+            t2.like_num as likeNum,
+            t2.gmt_create as gmtCreate,
+            t2.gmt_update as gmtUpdate,
+            t2.comment_num as commentNum
+        from
+            (
+                select aid
+                from my_favorite
+                where uid = #{uid}
+                order by gmt_create
+                limit #{from}, #{size}
+            ) t1
+                left join article t2 on t1.aid = t2.id
+    </select>
 </mapper>
