@@ -8,14 +8,12 @@ import com.zlj.forum.web.dataobject.*;
 import com.zlj.forum.web.form.UserExtForm;
 import com.zlj.forum.web.mapper.ArticleMapper;
 import com.zlj.forum.web.mapper.FollowRelationMapper;
-import com.zlj.forum.web.mapper.MyFavoriteMapper;
 import com.zlj.forum.web.to.FollowTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
