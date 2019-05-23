@@ -26,6 +26,8 @@ public class UserCommentTO {
 
     private String nickName;
 
+    private String avatar;
+
     private boolean isLike = false;
 
     /**

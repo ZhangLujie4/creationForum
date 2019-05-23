@@ -18,7 +18,8 @@
         reply as reply,
         like_num as likeNum,
         gmt_create as gmtCreate,
-        gmt_update as gmtUpdate
+        gmt_update as gmtUpdate,
+        avatar as avatar
         from user_comment
         where aid = #{aid}
         order by likeNum desc, gmtCreate desc

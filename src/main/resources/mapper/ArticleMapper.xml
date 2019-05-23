@@ -3,7 +3,7 @@
 <mapper namespace="com.zlj.forum.web.mapper.ArticleMapper">
 
     <update id="addCommentNum" parameterType="java.lang.Long">
-        update article set comment_num = comment_num + 1 where id = #{id}
+        update article set comment_num = comment_num + 1 where id = #{aid}
     </update>
 
     <select id="getHomeList" resultType="com.zlj.forum.web.dataobject.ArticleDO">

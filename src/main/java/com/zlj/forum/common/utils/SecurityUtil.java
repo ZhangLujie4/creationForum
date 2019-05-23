@@ -28,10 +28,13 @@ public class SecurityUtil {
 
     public static SecurityUser getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            return (SecurityUser) authentication.getPrincipal();
+        try {
+            if (authentication != null) {
+                return (SecurityUser) authentication.getPrincipal();
+            }
+        } catch (Exception e) {
+            // 不作处理
         }
-
         return null;
     }
 

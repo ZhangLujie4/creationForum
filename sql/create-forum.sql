@@ -85,6 +85,7 @@ create table `user_comment` (
   `content` varchar(256) default '' comment '评论内容',
   `reply` varchar(512) default '' comment '回复内容',
   `like_num` int(11) default '0' comment '点赞数',
+  `avatar` varchar(256) default '' comment '用户头像',
   `gmt_create` timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_update` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   primary key (`id`)

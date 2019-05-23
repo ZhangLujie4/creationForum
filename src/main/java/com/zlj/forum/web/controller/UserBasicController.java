@@ -74,7 +74,7 @@ public class UserBasicController {
     /**
      * 用户信息获取
      */
-    @GetMapping("/user/home/info")
+    @GetMapping("/common/home/info")
     public ResultVO getUserInfo(@RequestParam(name = "id") Long id) {
         if (id == null) {
             return ResultVOUtil.error(ResultEnum.PARAM_ERROR);

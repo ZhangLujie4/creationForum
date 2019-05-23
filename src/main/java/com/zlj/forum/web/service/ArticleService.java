@@ -148,6 +148,7 @@ public class ArticleService {
         articleDO.setUid(uid);
         articleDO.setLikeNum(0L);
         articleDO.setFavoriteNum(0L);
+        articleDO.setCommentNum(0L);
         if (articleForm.getTitle() != null) {
             articleDO.setTitle(articleForm.getTitle());
         }
@@ -243,13 +244,14 @@ public class ArticleService {
         long total = articleJpaDAO.getOne(aid).getCommentNum();
         List<UserCommentDO> userCommentDOList = userCommentMapper.getCommentList(aid, (page - 1) * size, size);
         List<UserCommentTO> userCommentTOS = convertComment(userCommentDOList);
-        List<Long> cids = new ArrayList<>();
+        List<String> cids = new ArrayList<>();
         for (UserCommentDO userCommentDO : userCommentDOList) {
-            cids.add(userCommentDO.getId());
+            cids.add(userCommentDO.getId().toString());
         }
 
-        if (uid == null || !CollectionUtils.isEmpty(cids)) {
-            List<Long> likeCids = likeRelationCommentMapper.getRelationList(uid, cids);
+        if (uid != null && !CollectionUtils.isEmpty(cids)) {
+            String cidString = org.apache.tomcat.util.buf.StringUtils.join(cids, ',');
+            List<Long> likeCids = likeRelationCommentMapper.getRelationList(uid, "(" + cidString + ")");
             for (UserCommentTO userCommentTO : userCommentTOS) {
                 if (likeCids.contains(userCommentTO.getId())) {
                     userCommentTO.setLike(true);
@@ -281,9 +283,10 @@ public class ArticleService {
             userCommentDO.setNickName(SecurityUtil.getCurrentUser().getUsername());
         } else {
             userCommentDO.setNickName(extDO.getNickName());
+            userCommentDO.setAvatar(extDO.getAvatar());
         }
         userCommentDO.setUid(uid);
-        if (commentForm.getRid() != null) {
+        if (commentForm.getRid() != null && commentForm.getRid() > 0) {
             UserCommentDO commentDO = userCommentJpaDAO.getOne(commentForm.getRid());
             if (commentDO != null) {
                 Map<String, Object> map = new HashMap<>();
@@ -292,6 +295,7 @@ public class ArticleService {
                 map.put("id", commentDO.getId());
                 map.put("nickName", commentDO.getNickName());
                 map.put("gmtCreate", commentDO.getGmtCreate());
+                map.put("avatar", commentDO.getAvatar());
                 userCommentDO.setReply(JSONObject.toJSONString(map));
             }
         }
@@ -417,6 +421,7 @@ public class ArticleService {
             commentTO.setUid(commentDO.getUid());
             commentTO.setGmtCreate(commentDO.getGmtCreate());
             commentTO.setContent(commentDO.getContent());
+            commentTO.setAvatar(commentDO.getAvatar());
             userCommentTOS.add(commentTO);
         }
         return userCommentTOS;

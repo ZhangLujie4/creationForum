@@ -161,7 +161,7 @@ public class UserBasicService {
             FollowRelationDO relationDO = followRelationJpaDAO.findByFansUidAndFollowedUid(currentUid, uid);
             map.put("is_follow", relationDO != null);
         }
-        UserDO userDO = userJpaDAO.getOne(uid);
+        UserDO userDO = userJpaDAO.findByUid(uid);
         map.put("username", userDO.getUsername());
         UserExtDO userExtDO = userExtJpaDAO.findByUid(uid);
         if (null != userExtDO) {

@@ -5,10 +5,7 @@
     <select id="getRelationList" resultType="java.lang.Long">
         select cid
         from like_relation_comment
-        where uid = #{uid} and cid in
-       <foreach item="item" index="index" collection="cids"
-                       open="(" separator="," close=")">
-            #{item}
-        </foreach>
+        where uid = #{uid}
+        and cid in ${cids}
     </select>
 </mapper>

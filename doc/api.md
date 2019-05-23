@@ -35,3 +35,5 @@
 /api/common/search/list
 ```
 
+推荐算法/搜索算法/
+

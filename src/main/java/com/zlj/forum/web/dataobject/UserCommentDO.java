@@ -38,6 +38,8 @@ public class UserCommentDO {
 
     private String nickName;
 
+    private String avatar;
+
     /**
      * 创建时间
      */
