@@ -5,6 +5,7 @@ import com.zlj.forum.web.service.RecommendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author zhanglujie
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @date 2019-05-21 20:32
  */
 
+@RestController
 @RequestMapping("/api")
 public class RecommendController {
 

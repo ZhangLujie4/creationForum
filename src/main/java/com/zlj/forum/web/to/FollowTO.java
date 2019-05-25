@@ -18,4 +18,6 @@ public class FollowTO {
     private String avatar;
 
     private String motto;
+
+    private Long uid;
 }

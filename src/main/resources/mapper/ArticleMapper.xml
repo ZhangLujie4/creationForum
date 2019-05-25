@@ -1,39 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zlj.forum.web.mapper.ArticleMapper">
+    <resultMap id="article" type="com.zlj.forum.web.dataobject.ArticleDO">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="uid" column="uid"/>
+        <result property="favoriteNum" column="favorite_num"/>
+        <result property="likeNum" column="like_num"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtUpdate" column="gmt_update"/>
+        <result property="commentNum" column="comment_num"/>
+    </resultMap>
 
     <update id="addCommentNum" parameterType="java.lang.Long">
         update article set comment_num = comment_num + 1 where id = #{aid}
     </update>
 
-    <select id="getHomeList" resultType="com.zlj.forum.web.dataobject.ArticleDO">
-        select
-               id as id,
-               title as title,
-               uid as uid,
-               favorite_num as favoriteNum,
-               like_num as likeNum,
-               gmt_create as gmtCreate,
-               gmt_update as gmtUpdate,
-               comment_num as commentNum
+    <select id="getHomeList" resultMap="article">
+        select *
         from article
-        order by likeNum desc, favoriteNum desc, commentNum desc, gmtUpdate desc
+        order by like_num desc, favorite_num desc, comment_num desc, gmt_update desc
         limit #{from}, #{size}
     </select>
 
-    <select id="getArticleListByUid" resultType="com.zlj.forum.web.dataobject.ArticleDO">
-        select
-            id as id,
-            title as title,
-            uid as uid,
-            favorite_num as favoriteNum,
-            like_num as likeNum,
-            gmt_create as gmtCreate,
-            gmt_update as gmtUpdate,
-            comment_num as commentNum
+    <select id="getArticleListByUid" resultMap="article">
+        select *
         from article
         where uid = #{uid}
-        order by gmtUpdate desc
+        order by gmt_update desc
         limit #{from}, #{size}
     </select>
 

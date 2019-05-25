@@ -32,4 +32,6 @@ public class UserExtDO {
     private String motto;
 
     private String nickName;
+
+    private String tags;
 }

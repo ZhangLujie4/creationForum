@@ -37,3 +37,5 @@
 
 推荐算法/搜索算法/
 
+create index hot_list_index on article (like_num desc, favorite_num desc, comment_num desc, gmt_update desc) 
+

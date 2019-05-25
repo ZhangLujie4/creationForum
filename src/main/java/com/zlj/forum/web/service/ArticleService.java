@@ -220,6 +220,7 @@ public class ArticleService {
             map.put("avatar", userExtDO.getAvatar());
             map.put("nickname", userExtDO.getNickName());
             map.put("motto", userExtDO.getMotto());
+            map.put("tags", userExtDO.getTags());
         }
         Long uid = SecurityUtil.getCurrentUserId();
         if (uid != null) {
@@ -319,8 +320,8 @@ public class ArticleService {
      */
     public ResultVO getHomeList(int page, int size) {
         String cacheKey = "home_list:" + page;
-        String homeString = redisTemplate.opsForValue().get(cacheKey);
-        if (true){//StringUtils.isEmpty(homeString)) {
+        //String homeString = redisTemplate.opsForValue().get(cacheKey);
+        //if (StringUtils.isEmpty(homeString)) {
             List<ArticleDO> articleDOS = articleMapper.getHomeList((page - 1) * size, size);
             String[] aids = new String[articleDOS.size()];
             int i = 0;
@@ -347,10 +348,10 @@ public class ArticleService {
                 articleTO.setContent(result.get(articleDO.getId()+""));
                 articleTOS.add(articleTO);
             }
-            redisTemplate.opsForValue().set(cacheKey, JSONObject.toJSONString(articleTOS), 60*5, TimeUnit.SECONDS);
+            //redisTemplate.opsForValue().set(cacheKey, JSONObject.toJSONString(articleTOS), 60*5, TimeUnit.SECONDS);
             return ResultVOUtil.success(articleTOS);
-        }
-        return ResultVOUtil.success(JSONObject.parse(homeString));
+        //}
+        //return ResultVOUtil.success(JSONObject.parse(homeString));
     }
 
     /**

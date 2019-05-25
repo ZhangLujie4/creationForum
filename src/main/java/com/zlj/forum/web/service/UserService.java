@@ -91,6 +91,7 @@ public class UserService {
         if (null != extDO) {
             map.put("nickname", StringUtils.isEmpty(extDO.getNickName()) ? "" : extDO.getNickName());
             map.put("avatar", StringUtils.isEmpty(extDO.getAvatar()) ? "" : extDO.getAvatar());
+            map.put("tags", StringUtils.isEmpty(extDO.getTags()) ? "" : extDO.getTags());
         }
         return ResultVOUtil.success(map);
     }

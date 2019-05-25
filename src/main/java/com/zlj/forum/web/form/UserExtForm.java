@@ -16,4 +16,6 @@ public class UserExtForm {
     private String motto;
 
     private String nickName;
+
+    private String tags;
 }

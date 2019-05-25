@@ -74,6 +74,7 @@ create table `user_ext` (
   `avatar` varchar(256) default '' comment '头像链接',
   `motto` varchar(128) default '' comment '座右铭',
   `nick_name` varchar(64) default '' comment '昵称',
+  `tags` varchar(256) default '' comment '用户标签',
   primary key (`id`)
 ) comment '用户信息扩展标';
 

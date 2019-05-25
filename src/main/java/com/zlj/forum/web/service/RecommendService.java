@@ -5,6 +5,8 @@ import com.zlj.forum.common.utils.ResultVOUtil;
 import com.zlj.forum.web.mapper.HotSearchMapper;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * @author zhanglujie
@@ -12,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 2019-05-22 01:00
  */
 
-@Data
+@Service
 public class RecommendService {
 
     @Autowired

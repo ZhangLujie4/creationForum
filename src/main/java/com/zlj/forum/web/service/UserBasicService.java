@@ -168,6 +168,7 @@ public class UserBasicService {
             map.put("avatar", userExtDO.getAvatar());
             map.put("motto", userExtDO.getMotto());
             map.put("nickname", userExtDO.getNickName());
+            map.put("tags", userExtDO.getTags());
         }
         map.put("articleNum", articleJpaDAO.countByUid(uid));
         map.put("followNum", followRelationJpaDAO.countByFansUid(uid));
@@ -200,6 +201,10 @@ public class UserBasicService {
             userExtDO.setNickName(extForm.getNickName());
         }
 
+        if (null != extForm.getTags()) {
+            userExtDO.setTags(extForm.getTags());
+        }
+        userExtDO.setUid(uid);
         userExtJpaDAO.save(userExtDO);
         return ResultVOUtil.success(userExtDO);
     }
