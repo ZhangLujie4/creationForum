@@ -101,11 +101,14 @@ public class ArticleService {
      * @param articleForm
      * @return
      */
-    public ResultVO updateArticle(ArticleForm articleForm) {
+    public ResultVO updateArticle(ArticleForm articleForm, Long uid) {
         // 当id存在时，说明是更新操作
         ArticleDO findRes = articleJpaDAO.getOne(articleForm.getId());
         if (findRes == null) {
             return ResultVOUtil.error(ResultEnum.PARAM_ERROR.getCode(), "文章不存在");
+        }
+        if (!findRes.getUid().equals(uid)) {
+            return ResultVOUtil.error(ResultEnum.PARAM_ERROR.getCode(), "当前操作者不是文章创建者！！！");
         }
         // es更新操作
         UpdateRequest update = new UpdateRequest(index, type, articleForm.getId() + "");
@@ -130,7 +133,7 @@ public class ArticleService {
             UpdateResponse result = client.update(update).get();
             findRes.setGmtUpdate(new Date());
             articleJpaDAO.save(findRes);
-            return ResultVOUtil.success(result.getResult().toString());
+            return ResultVOUtil.success(result.getId());
         } catch (Exception e) {
             e.printStackTrace();
             return ResultVOUtil.error(ResultEnum.ES_ERROR);
@@ -300,11 +303,12 @@ public class ArticleService {
             }
         }
         userCommentDO.setLikeNum(0L);
+        userCommentDO.setGmtCreate(new Date());
         userCommentJpaDAO.save(userCommentDO);
 
         // 异步更新评论数
         asyncCommonService.addCommentNum(commentForm.getAid());
-        return ResultVOUtil.success("评论成功");
+        return ResultVOUtil.success(userCommentDO);
     }
 
     /**
@@ -316,7 +320,7 @@ public class ArticleService {
     public ResultVO getHomeList(int page, int size) {
         String cacheKey = "home_list:" + page;
         String homeString = redisTemplate.opsForValue().get(cacheKey);
-        if (StringUtils.isEmpty(homeString)) {
+        if (true){//StringUtils.isEmpty(homeString)) {
             List<ArticleDO> articleDOS = articleMapper.getHomeList((page - 1) * size, size);
             String[] aids = new String[articleDOS.size()];
             int i = 0;
@@ -369,8 +373,8 @@ public class ArticleService {
         HighlightBuilder.Field content = new HighlightBuilder.Field("content");
         highlightBuilder.field(title);
         highlightBuilder.field(content);
-        highlightBuilder.preTags("<span style=\"color:red\">");
-        highlightBuilder.postTags("</span>");
+        highlightBuilder.preTags("「");
+        highlightBuilder.postTags("」");
         SearchRequestBuilder builder = client.prepareSearch(index)
                 .setTypes(type)
                 .setQuery(query)

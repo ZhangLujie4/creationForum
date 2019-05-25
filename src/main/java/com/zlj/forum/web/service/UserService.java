@@ -9,12 +9,15 @@ import com.zlj.forum.common.utils.Blowfish;
 import com.zlj.forum.common.utils.ResultVOUtil;
 import com.zlj.forum.common.utils.SecurityUtil;
 import com.zlj.forum.enums.ResultEnum;
+import com.zlj.forum.web.dao.UserExtJpaDAO;
 import com.zlj.forum.web.dao.UserJpaDAO;
 import com.zlj.forum.web.dataobject.UserDO;
+import com.zlj.forum.web.dataobject.UserExtDO;
 import com.zlj.forum.web.form.RegisterForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,8 +43,15 @@ public class UserService {
     @Autowired
     private TokenProvider tokenProvider;
 
-    public void register(RegisterForm registerForm) {
+    @Autowired
+    private UserExtJpaDAO userExtJpaDAO;
 
+    public ResultVO register(RegisterForm registerForm) {
+
+        UserDO userDO  = userJpaDAO.findByUsername(registerForm.getUsername());
+        if (null != userDO) {
+            return ResultVOUtil.error(ResultEnum.PARAM_ERROR.getCode(), "用户名已存在，请直接登录");
+        }
         UserDO user = new UserDO();
         String encodePwd;
         try {
@@ -56,6 +66,8 @@ public class UserService {
         userJpaDAO.save(user);
         user.setUid(user.getId() + System.currentTimeMillis() / 1000 - uniqueStartKey);
         userJpaDAO.save(user);
+
+        return ResultVOUtil.success(true);
     }
 
     public ResultVO login(RegisterForm registerForm) throws Exception {
@@ -72,7 +84,14 @@ public class UserService {
         Map<String, Object> map = new HashMap<>();
         UserAuthentication userAuthentication = new UserAuthentication(SecurityUtil.convertUser(userDO));
         String token = tokenProvider.createToken(userAuthentication);
+        map.put("uid", userDO.getUid());
         map.put("authorization", token);
+        map.put("username", userDO.getUsername());
+        UserExtDO extDO = userExtJpaDAO.findByUid(userDO.getUid());
+        if (null != extDO) {
+            map.put("nickname", StringUtils.isEmpty(extDO.getNickName()) ? "" : extDO.getNickName());
+            map.put("avatar", StringUtils.isEmpty(extDO.getAvatar()) ? "" : extDO.getAvatar());
+        }
         return ResultVOUtil.success(map);
     }
 }

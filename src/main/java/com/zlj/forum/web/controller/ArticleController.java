@@ -36,13 +36,13 @@ public class ArticleController {
         }
 
         if (articleForm.getId() != null && articleForm.getId() > 0) {
-            return articleService.updateArticle(articleForm);
+            return articleService.updateArticle(articleForm, uid);
         } else {
             return articleService.addArticle(articleForm);
         }
     }
 
-    @PostMapping("/user/article/delete")
+    @GetMapping("/user/article/delete")
     public ResultVO deleteArticle(@RequestParam(name = "id") String id) {
         Long uid = SecurityUtil.getCurrentUserId();
         return articleService.deleteArticle(uid, id);

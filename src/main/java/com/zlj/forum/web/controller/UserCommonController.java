@@ -40,9 +40,7 @@ public class UserCommonController {
                     bindingResult.getFieldError().getDefaultMessage());
         }
 
-        userService.register(registerForm);
-
-        return ResultVOUtil.success(true);
+        return userService.register(registerForm);
     }
 
     @PostMapping("/user/login")

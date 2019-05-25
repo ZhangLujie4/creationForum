@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Component
 public class TokenProvider {
 
-    private static final long EXPIRES_IN = 3600 * 1000;
+    private static final long EXPIRES_IN = 3600 * 1000 * 12;
 
     private static final String AUTHORITY_KEY = "auth";
 

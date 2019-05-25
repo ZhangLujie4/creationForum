@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface FollowRelationJpaDAO extends JpaRepository<FollowRelationDO, Long> {
 
-    FollowRelationDO findByFansUidAndFollowedUid(long fansUid, long followedUid);
+    FollowRelationDO findByFansUidAndFollowedUid(Long fansUid, Long followedUid);
 
     /**
      * 关注数
