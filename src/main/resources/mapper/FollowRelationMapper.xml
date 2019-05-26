@@ -38,4 +38,10 @@
                 left join `user` t2 on t1.fans_uid = t2.uid
                 left join `user_ext` t3 on t1.fans_uid = t3.uid
     </select>
+
+    <select id="getFollowIds" resultType="java.lang.Long">
+        select followed_uid
+        from follow_relation
+        where fans_uid = #{uid}
+    </select>
 </mapper>

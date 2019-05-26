@@ -258,7 +258,7 @@ public class UserBasicService {
      * @param size
      * @return
      */
-    public ResultVO getUserFollower(Long uid, int page, int size) {
+    public ResultVO getUserFollower(Long currentId, Long uid, int page, int size) {
         Map<String, Object> map = new HashMap<>();
         long total = followRelationJpaDAO.countByFansUid(uid);
         map.put("total", total);
@@ -266,6 +266,14 @@ public class UserBasicService {
         map.put("page", page);
         map.put("size", size);
         List<FollowTO> followForms = followRelationMapper.getUserFollower(uid, (page -1) * size, size);
+        if (null != currentId) {
+            List<Long> ids = followRelationMapper.getFollowIds(currentId);
+            for (FollowTO followTO : followForms) {
+                if (ids.contains(followTO.getUid())) {
+                    followTO.setIsFollow(true);
+                }
+            }
+        }
         if (!CollectionUtils.isEmpty(followForms)) {
             map.put("data", followForms);
         }
@@ -279,7 +287,7 @@ public class UserBasicService {
      * @param size
      * @return
      */
-    public ResultVO getUserFans(Long uid, int page, int size) {
+    public ResultVO getUserFans(Long currentId, Long uid, int page, int size) {
         Map<String, Object> map = new HashMap<>();
         long total = followRelationJpaDAO.countByFollowedUid(uid);
         map.put("total", total);
@@ -287,6 +295,14 @@ public class UserBasicService {
         map.put("page", page);
         map.put("size", size);
         List<FollowTO> followForms = followRelationMapper.getUserFans(uid, (page -1) * size, size);
+        if (null != currentId) {
+            List<Long> ids = followRelationMapper.getFollowIds(currentId);
+            for (FollowTO followTO : followForms) {
+                if (ids.contains(followTO.getUid())) {
+                    followTO.setIsFollow(true);
+                }
+            }
+        }
         if (!CollectionUtils.isEmpty(followForms)) {
             map.put("data", followForms);
         }

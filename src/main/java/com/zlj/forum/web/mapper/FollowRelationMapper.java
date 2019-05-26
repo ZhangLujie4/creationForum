@@ -15,4 +15,6 @@ public interface FollowRelationMapper {
     List<FollowTO> getUserFollower(@Param("uid") long uid, @Param("from") int from, @Param("size") int size);
 
     List<FollowTO> getUserFans(@Param("uid") long uid, @Param("from") int from, @Param("size") int size);
+
+    List<Long> getFollowIds(@Param("uid") long uid);
 }

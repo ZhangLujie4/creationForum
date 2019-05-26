@@ -20,4 +20,6 @@ public class FollowTO {
     private String motto;
 
     private Long uid;
+
+    private Boolean isFollow = false;
 }

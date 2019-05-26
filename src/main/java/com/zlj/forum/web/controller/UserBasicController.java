@@ -121,7 +121,8 @@ public class UserBasicController {
     public ResultVO getUserFollower(@RequestParam(name = "id") Long id,
                                     @RequestParam(name = "page", defaultValue = "1") int page,
                                     @RequestParam(name = "size", defaultValue = "15") int size) {
-        return userBasicService.getUserFollower(id, page, size);
+        Long uid = SecurityUtil.getCurrentUserId();
+        return userBasicService.getUserFollower(uid, id, page, size);
     }
 
     /**
@@ -131,7 +132,8 @@ public class UserBasicController {
     public ResultVO getUserFans(@RequestParam(name = "id") Long id,
                                 @RequestParam(name = "page", defaultValue = "1") int page,
                                 @RequestParam(name = "size", defaultValue = "15") int size) {
-        return userBasicService.getUserFans(id, page, size);
+        Long uid = SecurityUtil.getCurrentUserId();
+        return userBasicService.getUserFans(uid, id, page, size);
     }
 
 
