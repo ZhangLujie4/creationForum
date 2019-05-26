@@ -91,3 +91,45 @@ create table `user_comment` (
   `gmt_update` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   primary key (`id`)
 ) comment '用户评论';
+
+# 推荐相关表
+create table `article_detail` (
+  `id` int(11) not null auto_increment comment '自增id',
+  `content` text comment '内容',
+  `title` text not null comment '标题',
+  `aid` int(16) not null comment '文章id',
+  primary key (`id`),
+  unique key (`aid`)
+) comment '文章详情表';
+
+create table `users` (
+  `id` int(11) not null auto_increment comment '用户关系表',
+  `uid` int(11) not null comment '用户ID',
+  `pref_list` text comment '用户关键词',
+  `username` varchar(32) not null comment '用户名',
+  primary key (`id`),
+  unique key (`uid`)
+) comment '用户关键词表';
+
+create table `article_logs` (
+  `id` int(11) not null auto_increment comment '自增id',
+  `uid` int(11) not null comment '用户uid',
+  `aid` int(11) not null comment '文章id',
+  `prefer_degree` int(11) default '0' comment '喜欢等级',
+  `view_time` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '浏览时间',
+  primary key (`id`)
+#   constraint `artclelogs_article_id` foreign key (`uid`) references `article_detail` (`uid`),
+#   constraint `artclelogs_users_id` foreign key (`aid`) references `users` (`aid`)
+) comment '用户操作记录表';
+
+create table `recommend_actions` (
+  `id` int(11) not null auto_increment comment '自增id',
+  `uid` int(11) not null comment '用户id',
+  `aid` int(11) not null comment '文章id',
+  `derive_time` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `feedback` int(1) default '0' comment '是否浏览',
+  `derive_algorithm` int(11) not null comment '推荐算法',
+  primary key (`id`)
+#   constraint `recommend_article_id` foreign key (`uid`) references `article_detail` (`uid`),
+#   constraint `recommend_users_id` foreign key (`aid`) references `users` (`aid`)
+) comment '用户推荐表';

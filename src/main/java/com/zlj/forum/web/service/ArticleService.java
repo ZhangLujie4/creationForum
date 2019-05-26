@@ -110,6 +110,7 @@ public class ArticleService {
         if (!findRes.getUid().equals(uid)) {
             return ResultVOUtil.error(ResultEnum.PARAM_ERROR.getCode(), "当前操作者不是文章创建者！！！");
         }
+
         // es更新操作
         UpdateRequest update = new UpdateRequest(index, type, articleForm.getId() + "");
         try {
@@ -133,6 +134,9 @@ public class ArticleService {
             UpdateResponse result = client.update(update).get();
             findRes.setGmtUpdate(new Date());
             articleJpaDAO.save(findRes);
+
+            asyncCommonService.updateArticleDetail(articleForm);
+
             return ResultVOUtil.success(result.getId());
         } catch (Exception e) {
             e.printStackTrace();
@@ -156,6 +160,8 @@ public class ArticleService {
             articleDO.setTitle(articleForm.getTitle());
         }
         articleJpaDAO.save(articleDO);
+
+        asyncCommonService.addArticleDetail(articleDO.getId(), articleForm);
         try {
             XContentBuilder story = XContentFactory.jsonBuilder()
                     .startObject()
@@ -228,6 +234,8 @@ public class ArticleService {
             map.put("like", likeRelationJpaDAO.findByAidAndUid(aid, uid) != null);
             map.put("favorite", myFavoriteJpaDAO.findByAidAndUid(aid, uid) != null);
             map.put("follow", followRelationJpaDAO.findByFansUidAndFollowedUid(uid, author) != null);
+
+            asyncCommonService.saveLogs(aid, uid, 0);
         }
         return ResultVOUtil.success(map);
     }

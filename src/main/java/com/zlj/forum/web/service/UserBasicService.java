@@ -72,6 +72,7 @@ public class UserBasicService {
             likeRelationDO.setUid(uid);
             likeRelationJpaDAO.save(likeRelationDO);
             asyncCommonService.updateArticleLikeNum(aid, 1);
+            asyncCommonService.saveLogs(aid, uid, 1);
         } else {
             likeRelationJpaDAO.deleteById(likeRelationDO.getId());
             asyncCommonService.updateArticleLikeNum(aid, -1);
@@ -94,6 +95,7 @@ public class UserBasicService {
             myFavoriteDO.setUid(uid);
             myFavoriteJpaDAO.save(myFavoriteDO);
             asyncCommonService.updateArticleFavoriteNum(aid, 1);
+            asyncCommonService.saveLogs(aid, uid, 2);
         } else {
             myFavoriteJpaDAO.deleteById(myFavoriteDO.getId());
             asyncCommonService.updateArticleFavoriteNum(aid, -1);

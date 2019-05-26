@@ -46,6 +46,9 @@ public class UserService {
     @Autowired
     private UserExtJpaDAO userExtJpaDAO;
 
+    @Autowired
+    private AsyncCommonService asyncCommonService;
+
     public ResultVO register(RegisterForm registerForm) {
 
         UserDO userDO  = userJpaDAO.findByUsername(registerForm.getUsername());
@@ -66,6 +69,8 @@ public class UserService {
         userJpaDAO.save(user);
         user.setUid(user.getId() + System.currentTimeMillis() / 1000 - uniqueStartKey);
         userJpaDAO.save(user);
+
+        asyncCommonService.saveUsers(user);
 
         return ResultVOUtil.success(true);
     }

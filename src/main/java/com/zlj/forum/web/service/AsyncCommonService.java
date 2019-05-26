@@ -1,17 +1,16 @@
 package com.zlj.forum.web.service;
 
-import com.zlj.forum.web.dao.ArticleJpaDAO;
-import com.zlj.forum.web.dao.HotSearchJpaDAO;
-import com.zlj.forum.web.dao.UserCommentJpaDAO;
-import com.zlj.forum.web.dataobject.ArticleDO;
-import com.zlj.forum.web.dataobject.HotSearchDO;
-import com.zlj.forum.web.dataobject.UserCommentDO;
+import com.zlj.forum.web.dao.*;
+import com.zlj.forum.web.dataobject.*;
+import com.zlj.forum.web.form.ArticleForm;
 import com.zlj.forum.web.mapper.ArticleMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+
+import java.util.Date;
 
 /**
  * @author zhanglujie
@@ -34,6 +33,15 @@ public class AsyncCommonService {
 
     @Autowired
     private HotSearchJpaDAO hotSearchJpaDAO;
+
+    @Autowired
+    private UsersJpaDAO usersJpaDAO;
+
+    @Autowired
+    private ArticleDetailJpaDAO articleDetailJpaDAO;
+
+    @Autowired
+    private ArticleLogsJpaDAO articleLogsJpaDAO;
 
     @Async
     public void addCommentNum(Long aid) {
@@ -97,6 +105,7 @@ public class AsyncCommonService {
      * @param cid
      * @param addition
      */
+    @Async
     public void updateCommentLikeNum(Long cid, int addition) {
         UserCommentDO commentDO = userCommentJpaDAO.getOne(cid);
         if (null == commentDO) {
@@ -105,5 +114,41 @@ public class AsyncCommonService {
         }
         commentDO.setLikeNum(commentDO.getLikeNum() + addition);
         userCommentJpaDAO.save(commentDO);
+    }
+
+    @Async
+    public void saveUsers(UserDO userDO) {
+        UsersDO usersDO = new UsersDO();
+        usersDO.setPrefList("");
+        usersDO.setUid(userDO.getUid());
+        usersDO.setUsername(userDO.getUsername());
+        usersJpaDAO.save(usersDO);
+    }
+
+    @Async
+    public void updateArticleDetail(ArticleForm articleForm) {
+        ArticleDetailDO articleDetailDO = articleDetailJpaDAO.findByAid(articleForm.getId());
+        articleDetailDO.setContent(articleForm.getDetail());
+        articleDetailDO.setTitle(articleForm.getTitle());
+        articleDetailJpaDAO.save(articleDetailDO);
+    }
+
+    @Async
+    public void addArticleDetail(Long aid, ArticleForm articleForm) {
+        ArticleDetailDO articleDetailDO = new ArticleDetailDO();
+        articleDetailDO.setTitle(articleForm.getTitle());
+        articleDetailDO.setContent(articleForm.getDetail());
+        articleDetailDO.setAid(aid);
+        articleDetailJpaDAO.save(articleDetailDO);
+    }
+
+    @Async
+    public void saveLogs(Long aid, Long uid, Integer degree) {
+        ArticleLogsDO articleLogsDO = new ArticleLogsDO();
+        articleLogsDO.setAid(aid);
+        articleLogsDO.setPreferDegree(degree);
+        articleLogsDO.setViewTime(new Date());
+        articleLogsDO.setUid(uid);
+        articleLogsJpaDAO.save(articleLogsDO);
     }
 }
