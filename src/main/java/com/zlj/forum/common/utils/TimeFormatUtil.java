@@ -4,6 +4,7 @@ import com.zlj.forum.common.exception.ResultException;
 import com.zlj.forum.enums.ResultEnum;
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -148,5 +149,46 @@ public class TimeFormatUtil {
         c.set(Calendar.MILLISECOND, 0);
         long earlyDay = c.getTime().getTime() - 3600 * 1000 * 24;
         return new Date(earlyDay);
+    }
+
+    /**
+     * 获取时间节点时间戳
+     * @param expireTime
+     * @return
+     */
+    public static Date getInRecTimestamp(int expireTime) {
+        // 得到日历
+        Calendar calendar = Calendar.getInstance();
+        // 设置为前expireTime天
+        calendar.add(Calendar.DAY_OF_MONTH, expireTime);
+        return calendar.getTime();
+    }
+
+    /**
+     * 获取时间节点的格式化字符串
+     * @param day
+     * @return
+     */
+    public static String getSpecificDayFormat(int day) {
+        SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, day);
+        Date d = calendar.getTime();
+        return "'" + date_format.format(d) + "'";
+    }
+
+    /**
+     * 获取时间节点时间戳
+     * @param hour
+     * @param minute
+     * @param second
+     * @return
+     */
+    public static Timestamp getCertainTimestamp(int hour, int minute, int second) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, second);
+        return new Timestamp(calendar.getTime().getTime());
     }
 }

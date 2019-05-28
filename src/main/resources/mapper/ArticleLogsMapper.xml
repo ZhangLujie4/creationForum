@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zlj.forum.web.mapper.ArticleLogsMapper">
+    <resultMap id="articleLogs" type="com.zlj.forum.web.dataobject.ArticleLogsDO">
+        <id property="id" column="id"/>
+        <result property="uid" column="uid"/>
+        <result property="aid" column="aid"/>
+        <result property="preferDegree" column="prefer_degree"/>
+        <result property="viewTime" column="view_time"/>
+    </resultMap>
+
+    <select id="findAllUserLogs" resultMap="articleLogs">
+        select * from article_logs
+    </select>
+
+    <select id="selectUserLogs" resultMap="articleLogs">
+        select * from article_logs
+    </select>
+
+    <delete id="deleteLogs" parameterType="java.lang.String">
+        delete from article_logs where id in ${inSql};
+    </delete>
+
+    <select id="selectLogsByUids" resultMap="articleLogs">
+        select * from article_logs
+        <where>
+            and uid in
+            <foreach collection="uidList" item="uid" open="(" separator="," close=")">
+                #{uid}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectSingleUserLog" resultMap="articleLogs">
+        select * from article_logs where uid = #{uid}
+    </select>
+
+    <select id="getHotArticles" resultType="com.zlj.forum.web.to.ItemTO">
+        select
+        aid as iid,
+        count(*) as num
+        from article_logs
+        where view_time > #{viewTime}
+        group by aid
+        order by num desc
+    </select>
+</mapper>

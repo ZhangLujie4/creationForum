@@ -106,6 +106,7 @@ create table `users` (
   `id` int(11) not null auto_increment comment '用户关系表',
   `uid` int(11) not null comment '用户ID',
   `pref_list` text comment '用户关键词',
+  `user_list` text comment '用户相似度最高的几个人',
   `username` varchar(32) not null comment '用户名',
   primary key (`id`),
   unique key (`uid`)
@@ -129,6 +130,7 @@ create table `recommend_actions` (
   `derive_time` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `feedback` int(1) default '0' comment '是否浏览',
   `derive_algorithm` int(11) not null comment '推荐算法',
+#  `reason` varchar(256) default '' comment '推荐原因',
   primary key (`id`)
 #   constraint `recommend_article_id` foreign key (`uid`) references `article_detail` (`uid`),
 #   constraint `recommend_users_id` foreign key (`aid`) references `users` (`aid`)

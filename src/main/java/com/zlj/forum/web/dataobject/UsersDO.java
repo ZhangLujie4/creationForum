@@ -30,4 +30,6 @@ public class UsersDO {
     private String prefList;
 
     private String username;
+
+    private String userList;
 }

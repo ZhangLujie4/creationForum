@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @date 2019-05-26 22:41
  */
 public interface UsersJpaDAO extends JpaRepository<UsersDO, Long> {
+
+    UsersDO findByUid(Long uid);
 }

@@ -317,6 +317,7 @@ public class ArticleService {
 
         // 异步更新评论数
         asyncCommonService.addCommentNum(commentForm.getAid());
+        asyncCommonService.saveLogs(commentForm.getAid(), uid, 3);
         return ResultVOUtil.success(userCommentDO);
     }
 

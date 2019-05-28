@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zlj.forum.web.mapper.ArticleDetailMapper">
+    <resultMap id="articleDetail" type="com.zlj.forum.web.dataobject.ArticleDetailDO">
+        <id property="id" column="id"/>
+        <result property="content" column="content"/>
+        <result property="title" column="title"/>
+        <result property="aid" column="aid"/>
+    </resultMap>
+
+    <select id="selectArticles" resultMap="articleDetail">
+        select * from article_detail
+        <where>
+            and aid in
+            <foreach collection="aidList" item="aid" open="(" separator="," close=")">
+                #{aid}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectArticleByUid" resultMap="articleDetail">
+        select
+        t1.derive_algorithm as id,
+        t2.content as content,
+        t2.title as title,
+        t2.aid as aid
+        from (
+             select aid, derive_algorithm from recommend_actions where uid = #{uid} order by id desc limit #{num}
+             ) t1 left join article_detail t2 on t1.aid = t2.aid
+    </select>
+
+    <select id="getBasicArticle" resultMap="articleDetail">
+       select *
+       from article_detail
+       order by id desc limit #{num}
+    </select>
+
+    <select id="getArticleByFollowed" resultMap="articleDetail">
+        select
+        t3.id as id,
+        t3.content as content,
+       t3.title as title,
+       t3.aid as aid
+        from (
+             select followed_uid
+             from follow_relation
+             where fans_uid = #{uid}
+        ) t1 left join article t2 on t1.followed_uid = t2.uid
+        left join article_detail t3 on t2.id = t3.aid
+        order by id desc
+    </select>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zlj.forum.web.mapper.RecommendActionsMapper">
+    <resultMap id="recommendActions" type="com.zlj.forum.web.dataobject.RecommendActionsDO">
+        <id property="id" column="id"/>
+        <result property="uid" column="uid"/>
+        <result property="aid" column="aid"/>
+        <result property="deriveTime" column="derive_time"/>
+        <result property="feedback" column="feedback"/>
+        <result property="deriveAlgorithm" column="derive_algorithm"/>
+    </resultMap>
+
+    <select id="getHistoryRecom" resultMap="recommendActions">
+        select *
+        from recommend_actions
+        where uid = #{uid} and derive_time > #{deriveTime}
+    </select>
+
+    <select id="getReadyRecomNum" resultType="java.lang.Integer">
+        select count(*) from recommend_actions
+        where uid = #{uid} and derive_time > #{deriveTime}
+    </select>
+</mapper>

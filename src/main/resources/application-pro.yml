@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/creation-forum?characterEncoding=utf-8&useSSL=false
+    username: root
+    password: zhanglujie
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: zhanglujie
