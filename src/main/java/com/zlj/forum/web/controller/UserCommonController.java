@@ -2,10 +2,7 @@ package com.zlj.forum.web.controller;
 
 import com.zlj.forum.common.VO.ResultVO;
 import com.zlj.forum.common.exception.ResultException;
-import com.zlj.forum.common.utils.Blowfish;
-import com.zlj.forum.common.utils.ResultVOUtil;
 import com.zlj.forum.enums.ResultEnum;
-import com.zlj.forum.web.dataobject.UserDO;
 import com.zlj.forum.web.form.RegisterForm;
 import com.zlj.forum.web.service.UserService;
 import lombok.extern.slf4j.Slf4j;

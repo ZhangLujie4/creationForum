@@ -33,7 +33,7 @@ public class ElasticSearchConfig {
     @Bean
     public TransportClient client() throws UnknownHostException {
         InetSocketTransportAddress node = new InetSocketTransportAddress(
-            InetAddress.getByName("127.0.0.1"),
+            InetAddress.getByName("47.95.215.194"),
             9300
         );
 
