@@ -18,6 +18,16 @@
         </where>
     </select>
 
+    <select id="getArticleMap" resultType="com.zlj.forum.web.to.DetailTO">
+        select aid, left(content, 150) as content from article_detail
+        <where>
+          and aid in
+            <foreach collection="aids" item="aid" open="(" separator="," close=")">
+                #{aid}
+            </foreach>
+        </where>
+    </select>
+
     <select id="selectArticleByUid" resultMap="articleDetail">
         select
         t1.derive_algorithm as id,

@@ -9,10 +9,12 @@ import com.zlj.forum.web.dao.*;
 import com.zlj.forum.web.dataobject.*;
 import com.zlj.forum.web.form.ArticleForm;
 import com.zlj.forum.web.form.CommentForm;
+import com.zlj.forum.web.mapper.ArticleDetailMapper;
 import com.zlj.forum.web.mapper.ArticleMapper;
 import com.zlj.forum.web.mapper.LikeRelationCommentMapper;
 import com.zlj.forum.web.mapper.UserCommentMapper;
 import com.zlj.forum.web.to.ArticleTO;
+import com.zlj.forum.web.to.DetailTO;
 import com.zlj.forum.web.to.UserCommentTO;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.delete.DeleteResponse;
@@ -42,6 +44,7 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @author zhanglujie
@@ -95,6 +98,9 @@ public class ArticleService {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
+
+    @Autowired
+    private ArticleDetailMapper articleDetailMapper;
 
     /**
      * 更新文档
@@ -193,6 +199,7 @@ public class ArticleService {
                 .get();
 
         articleJpaDAO.removeByIdAndUid(Long.valueOf(id), uid);
+        asyncCommonService.deleteArticle(Long.valueOf(id));
         return ResultVOUtil.success(result.getResult().toString());
     }
 
@@ -329,38 +336,49 @@ public class ArticleService {
      */
     public ResultVO getHomeList(int page, int size) {
         String cacheKey = "home_list:" + page;
-        //String homeString = redisTemplate.opsForValue().get(cacheKey);
-        //if (StringUtils.isEmpty(homeString)) {
+        String homeString = redisTemplate.opsForValue().get(cacheKey);
+        if (StringUtils.isEmpty(homeString)) {
             List<ArticleDO> articleDOS = articleMapper.getHomeList((page - 1) * size, size);
-            String[] aids = new String[articleDOS.size()];
-            int i = 0;
-            for (ArticleDO articleDO : articleDOS) {
-               aids[i++] = articleDO.getId().toString();
+//            String[] aids = new String[articleDOS.size()];
+//            int i = 0;
+//            for (ArticleDO articleDO : articleDOS) {
+//               aids[i++] = articleDO.getId().toString();
+//            }
+//            QueryBuilder query = QueryBuilders.idsQuery(type).addIds(aids);
+//            SearchRequestBuilder builder = client.prepareSearch(index)
+//                    .setTypes(type)
+//                    .setQuery(query)
+//                    .setFrom(0)
+//                    .setSize(articleDOS.size());
+//            SearchResponse response = builder.get();
+//
+//            Map<String, Object> result = new HashMap<>();
+//            for (SearchHit hit : response.getHits()) {
+//                result.put(hit.getId(), hit.getSource());
+//            }
+            List<Long> aids = articleDOS.stream().map(articleDO -> articleDO.getId()).collect(Collectors.toList());
+            List<DetailTO> detailTOS = new ArrayList<>();
+            if (!CollectionUtils.isEmpty(aids)) {
+                detailTOS = articleDetailMapper.getArticleMap(aids);
             }
-            QueryBuilder query = QueryBuilders.idsQuery(type).addIds(aids);
-            SearchRequestBuilder builder = client.prepareSearch(index)
-                    .setTypes(type)
-                    .setQuery(query)
-                    .setFrom(0)
-                    .setSize(articleDOS.size());
-            SearchResponse response = builder.get();
 
-            Map<String, Object> result = new HashMap<>();
-            for (SearchHit hit : response.getHits()) {
-                result.put(hit.getId(), hit.getSource());
+            Map<Long, String> result = new HashMap<>();
+            for (DetailTO detailTO : detailTOS) {
+                result.put(detailTO.getAid(), detailTO.getContent() + "...");
             }
 
             List<ArticleTO> articleTOS = new ArrayList<>();
             for (ArticleDO articleDO : articleDOS) {
                 ArticleTO articleTO = new ArticleTO();
                 BeanUtils.copyProperties(articleDO, articleTO);
-                articleTO.setContent(result.get(articleDO.getId()+""));
+                String content = result.get(articleDO.getId());
+                articleTO.setContent(content.length() > 150 ? content.substring(0, 150) + "..." : content);
                 articleTOS.add(articleTO);
             }
-            //redisTemplate.opsForValue().set(cacheKey, JSONObject.toJSONString(articleTOS), 60*5, TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(cacheKey, JSONObject.toJSONString(articleTOS), 30, TimeUnit.SECONDS);
             return ResultVOUtil.success(articleTOS);
-        //}
-        //return ResultVOUtil.success(JSONObject.parse(homeString));
+        }
+        return ResultVOUtil.success(JSONObject.parse(homeString));
     }
 
     /**

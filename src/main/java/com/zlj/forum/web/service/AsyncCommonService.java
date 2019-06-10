@@ -43,6 +43,9 @@ public class AsyncCommonService {
     @Autowired
     private ArticleLogsJpaDAO articleLogsJpaDAO;
 
+    @Autowired
+    private RecommendActionsJpaDAO recommendActionsJpaDAO;
+
     @Async
     public void addCommentNum(Long aid) {
         articleMapper.addCommentNum(aid);
@@ -150,5 +153,11 @@ public class AsyncCommonService {
         articleLogsDO.setViewTime(new Date());
         articleLogsDO.setUid(uid);
         articleLogsJpaDAO.save(articleLogsDO);
+    }
+
+    @Async
+    public void deleteArticle(Long aid) {
+        articleDetailJpaDAO.removeByAid(aid);
+        recommendActionsJpaDAO.removeByAid(aid);
     }
 }

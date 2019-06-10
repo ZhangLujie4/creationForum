@@ -5,3 +5,13 @@ mybatis:
 spring:
   profiles:
     active: dev
+  servlet:
+    multipart:
+      max-file-size: 40MB
+      max-request-size: 100MB
+# oss配置
+oss:
+  endpoint: oss-cn-hangzhou.aliyuncs.com
+  keyid: LTAI3aMFvy1aAhfK
+  keysecret: 19fVgNYw1v8s0srfBMZ2y42ctGnjMv
+  bucket: draft-editor
